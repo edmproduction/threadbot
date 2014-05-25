@@ -100,6 +100,14 @@ thread_r = r.json()['json']
 if len(thread_r['errors']) > 0:
     p.pprint(thread_r)
 
+#### Put thread in contest mode
+
+dist_data = {'api_type': 'json', 'id': name, 'state': 'true', 'uh': mh}
+r = s.post('http://www.reddit.com/api/set_contest_mode', data=dist_data, cookies=cookie)
+thread_r = r.json()['json']
+if len(thread_r['errors']) > 0:
+    p.pprint(thread_r)
+
 
 #### Edit to include "sort by new" link
 if sort_by_new:
