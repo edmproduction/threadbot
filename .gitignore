@@ -1,0 +1,2 @@
+# let's ignore .cfg files? don't think we'll need to track them
+*.cfg
