@@ -22,7 +22,7 @@ user_pass_dict = {'user': user,
 
 s = requests.Session()
 s.headers.update({'User-Agent': 'edmproduction weekly threadbot by /u/fiyarburst'})
-r = s.post('http://www.reddit.com/api/login', data=user_pass_dict)
+r = s.post('https://www.reddit.com/api/login', data=user_pass_dict)
 login = r.json()['json']['data']
 cookie = {'cookie': login['cookie']}
 mh = login['modhash']
@@ -59,6 +59,7 @@ try:
     title = config.get(dayname, "title") + ' (' + d.strftime("%B %d") + ')'
     text = config.get(dayname, "text")
 except:
+    print "no post today"
     sys.exit()  # nothing found for today
 text = "\n\n".join(text.split("\n"))
 thread_call = {'api_type': 'json',
@@ -69,7 +70,7 @@ thread_call = {'api_type': 'json',
 
 #### Post thread, 'r' is the results; thread_r is a dict of r
 
-r = s.post('http://www.reddit.com/api/submit', data=thread_call, cookies=cookie)
+r = s.post('https://www.reddit.com/api/submit', data=thread_call, cookies=cookie)
 thread_r = r.json()['json']
 
 if len(thread_r['errors']) > 0:
@@ -95,7 +96,7 @@ url = thread_r['url']
 #### Mod-Distinguish thread
 
 dist_data = {'api_type': 'json', 'how': 'yes', 'id': name, 'uh': mh}
-r = s.post('http://www.reddit.com/api/distinguish', data=dist_data, cookies=cookie)
+r = s.post('https://www.reddit.com/api/distinguish', data=dist_data, cookies=cookie)
 thread_r = r.json()['json']
 if len(thread_r['errors']) > 0:
     p.pprint(thread_r)
@@ -103,7 +104,7 @@ if len(thread_r['errors']) > 0:
 #### Put thread in contest mode
 
 dist_data = {'api_type': 'json', 'id': name, 'state': 'true', 'uh': mh}
-r = s.post('http://www.reddit.com/api/set_contest_mode', data=dist_data, cookies=cookie)
+r = s.post('https://www.reddit.com/api/set_contest_mode', data=dist_data, cookies=cookie)
 thread_r = r.json()['json']
 if len(thread_r['errors']) > 0:
     p.pprint(thread_r)
@@ -114,7 +115,7 @@ if sort_by_new:
     url += '?sort=new'
     body_text = "**[Please sort this thread by new!](" + url + ")**\n\n " + thread_call['text']
     edit_data = {'api_type': 'json', 'text': body_text, 'thing_id': name, 'uh': mh}
-    r = s.post('http://www.reddit.com/api/editusertext', data=edit_data, cookies=cookie)
+    r = s.post('https://www.reddit.com/api/editusertext', data=edit_data, cookies=cookie)
 
 print url
 print "errors:"
